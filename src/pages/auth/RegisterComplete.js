@@ -11,12 +11,46 @@ export const RegisterComplete = ({ history }) => {
 
    const { email, password } = formValues;
 
-   //    useEffect(() => {
-   //        console.log(window.localStorage.getItem('emailForRegistration'))
-   //    }, [])
+   useEffect(() => {
+      //   console.log(window.localStorage.getItem('emailForRegistration'));
+      //   console.log(window.location.href);
+   }, []);
 
    const handleSubmit = async (e) => {
       e.preventDefault();
+      // Validation
+      if (!email || !password) {
+         toast.error('Email and password are required');
+         return;
+      }
+
+      if (password.length < 6) {
+         toast.error('Password must be at least 6 characters long');
+         return;
+      }
+
+      try {
+         const result = await auth.signInWithEmailLink(
+            email,
+            window.location.href,
+         );
+         //  console.log('RESULT ', result);
+         if (result.user.emailVerified) {
+            // remove user email from local storage
+            window.localStorage.removeItem('emailForRegistration');
+            // get user id token
+            const user = auth.currentUser;
+            await user.updatePassword(password);
+            const idTokenResult = await user.getIdTokenResult();
+            // redux store
+            console.log('USER', user, 'idTokenResult ', idTokenResult);
+            // redirect
+            history.push('/');
+         }
+      } catch (error) {
+         console.log(error);
+         toast.error(error.message);
+      }
    };
 
    const completeRegistrationForm = () => (
@@ -43,7 +77,7 @@ export const RegisterComplete = ({ history }) => {
             autoComplete='off'
          />
 
-         <br/>
+         <br />
 
          <button type='submit' className='btn btn-raised'>
             Complete Registration
