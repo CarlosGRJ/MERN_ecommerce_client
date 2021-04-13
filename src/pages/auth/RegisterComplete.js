@@ -1,33 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { auth } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
 
-const Register = () => {
+export const RegisterComplete = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
-      email: '',
+      email: `${window.localStorage.getItem('emailForRegistration') || ''}`,
+      password: '',
    });
 
-   const { email } = formValues;
+   const { email, password } = formValues;
+
+   //    useEffect(() => {
+   //        console.log(window.localStorage.getItem('emailForRegistration'))
+   //    }, [])
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      const config = {
-         url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
-         handleCodeInApp: true,
-      };
-
-      await auth.sendSignInLinkToEmail(email, config);
-      toast.success(
-         `Email is sent to ${email}. Click the link to complete your registration.`,
-      );
-      // Save user email in local storage
-      window.localStorage.setItem('emailForRegistration', email);
-      // clear state
-      reset();
    };
 
-   const registerForm = () => (
+   const completeRegistrationForm = () => (
       <form onSubmit={handleSubmit}>
          <input
             type='email'
@@ -35,13 +27,26 @@ const Register = () => {
             placeholder='Email'
             name='email'
             value={email}
+            autoFocus
+            autoComplete='off'
+            disabled
+         />
+
+         <input
+            type='password'
+            className='form-control'
+            placeholder='Password'
+            name='password'
+            value={password}
             onChange={handleInputChange}
             autoFocus
             autoComplete='off'
          />
 
+         <br/>
+
          <button type='submit' className='btn btn-raised'>
-            Register
+            Complete Registration
          </button>
       </form>
    );
@@ -50,12 +55,10 @@ const Register = () => {
       <div className='container p-5'>
          <div className='row'>
             <div className='col-md-6 offset-md-3'>
-               <h4>Register</h4>
-               {registerForm()}
+               <h4>Register Complete</h4>
+               {completeRegistrationForm()}
             </div>
          </div>
       </div>
    );
 };
-
-export default Register;
