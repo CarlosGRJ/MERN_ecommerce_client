@@ -40,6 +40,8 @@ const Register = () => {
             autoComplete='off'
          />
 
+         <br />
+
          <button type='submit' className='btn btn-raised'>
             Register
          </button>
