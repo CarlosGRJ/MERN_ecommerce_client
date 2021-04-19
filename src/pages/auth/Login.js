@@ -1,21 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { auth } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
-import { Button, Radio } from 'antd';
+import { Button } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { useForm } from '../../hooks/useForm';
+import { useDispatch } from 'react-redux';
+import { types } from '../../types/types';
 
-const Login = () => {
+const Login = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
-      email: '',
-      password: '',
+      email: 'carlosgrjpruebas@gmail.com',
+      password: '123456',
    });
 
    const { email, password } = formValues;
 
+   const [loading, setLoading] = useState(false);
+
+   const dispatch = useDispatch();
+
    const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log(formValues);
+      setLoading(true);
+      try {
+         const result = await auth.signInWithEmailAndPassword(email, password);
+         console.log('result ', result);
+         const { user } = result;
+         const idTokenResult = await user.getIdTokenResult();
+
+         dispatch({
+            type: types.authLogin,
+            payload: {
+               email: user.email,
+               token: idTokenResult,
+            },
+         });
+         history.push('/');
+      } catch (error) {
+         console.log(error);
+         toast.error(error.message);
+         setLoading(false);
+      }
       // clear state
       reset();
    };
