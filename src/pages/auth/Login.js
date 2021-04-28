@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth, googleAuthProvider } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
 import { Button } from 'antd';
 import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
 import { useForm } from '../../hooks/useForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { types } from '../../types/types';
 
 const Login = ({ history }) => {
@@ -13,6 +13,12 @@ const Login = ({ history }) => {
       email: 'carlosgrjpruebas@gmail.com',
       password: '123456',
    });
+
+   const { user } = useSelector((state) => ({ ...state }));
+
+   useEffect(() => {
+      if (user && user.token) history.push('/');
+   }, [user, history]);
 
    const { email, password } = formValues;
 

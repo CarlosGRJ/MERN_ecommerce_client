@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
 import { types } from '../../types/types';
+import { useSelector } from 'react-redux';
 
 export const ForgotPassword = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
@@ -12,6 +13,12 @@ export const ForgotPassword = ({ history }) => {
 
    const { email } = formValues;
    const [loading, setLoading] = useState(false);
+
+   const { user } = useSelector((state) => ({ ...state }));
+
+   useEffect(() => {
+      if (user && user.token) history.push('/');
+   }, [user, history]);
 
    const handleSubmit = async (e) => {
       e.preventDefault();
@@ -25,8 +32,8 @@ export const ForgotPassword = ({ history }) => {
       await auth
          .sendPasswordResetEmail(email, config)
          .then(() => {
-             // clear state
-             reset();
+            // clear state
+            reset();
             setLoading(false);
             toast.success('Check your email for password reset link');
          })
