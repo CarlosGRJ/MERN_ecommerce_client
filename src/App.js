@@ -13,6 +13,7 @@ import { RegisterComplete } from './pages/auth/RegisterComplete';
 import { useDispatch } from 'react-redux';
 import { auth } from './firebase/firebase';
 import { types } from './types/types';
+import { ForgotPassword } from './pages/auth/ForgotPassword';
 
 const App = () => {
    const dispatch = useDispatch();
@@ -21,7 +22,6 @@ const App = () => {
       const unsubscribe = auth.onAuthStateChanged(async (user) => {
          if (user) {
             const idTokenResult = await user.getIdTokenResult();
-            console.log('user', user);
             dispatch({
                type: types.authLogin,
                payload: {
@@ -47,6 +47,11 @@ const App = () => {
                exact
                path='/register/complete'
                component={RegisterComplete}
+            />
+            <Route
+               exact
+               path='/forgot/password'
+               component={ForgotPassword}
             />
          </Switch>
       </>

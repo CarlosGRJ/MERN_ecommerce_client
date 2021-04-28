@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
 
 export const RegisterComplete = ({ history }) => {
-   const [formValues, handleInputChange, reset] = useForm({
+   const [formValues, handleInputChange] = useForm({
       email: `${window.localStorage.getItem('emailForRegistration') || ''}`,
       password: '',
    });
