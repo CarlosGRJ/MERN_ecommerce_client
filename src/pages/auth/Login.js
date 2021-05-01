@@ -7,6 +7,19 @@ import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { types } from '../../types/types';
+import axios from 'axios';
+
+const createOrUpdateUser = async (authtoken) => {
+   return await axios.post(
+      `${process.env.REACT_APP_API}/create-or-update-user`,
+      {},
+      {
+         headers: {
+            authtoken,
+         },
+      },
+   );
+};
 
 const Login = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
@@ -34,6 +47,10 @@ const Login = ({ history }) => {
          console.log('result ', result);
          const { user } = result;
          const idTokenResult = await user.getIdTokenResult();
+
+         createOrUpdateUser(idTokenResult.token)
+            .then((res) => console.log('CREATE OR UPDATE RES: ', res))
+            .catch();
 
          dispatch({
             type: types.authLogin,
@@ -136,7 +153,9 @@ const Login = ({ history }) => {
                   Login with Google
                </Button>
 
-               <Link to='/forgot/password' className='float-right text-danger'>Forgot Password</Link>
+               <Link to='/forgot/password' className='float-right text-danger'>
+                  Forgot Password
+               </Link>
             </div>
          </div>
       </div>
