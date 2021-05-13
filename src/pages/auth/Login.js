@@ -7,25 +7,14 @@ import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { types } from '../../types/types';
-import axios from 'axios';
-
-const createOrUpdateUser = async (authtoken) => {
-   return await axios.post(
-      `${process.env.REACT_APP_API}/create-or-update-user`,
-      {},
-      {
-         headers: {
-            authtoken,
-         },
-      },
-   );
-};
+import { createOrUpdateUser } from '../../functions/auth';
 
 const Login = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
       email: 'carlosgrjpruebas@gmail.com',
       password: '123456',
    });
+   const { email, password } = formValues;
 
    const { user } = useSelector((state) => ({ ...state }));
 
@@ -33,7 +22,13 @@ const Login = ({ history }) => {
       if (user && user.token) history.push('/');
    }, [user, history]);
 
-   const { email, password } = formValues;
+   const roleBasedRedirect = (res) => {
+      if (res.data.role === 'admin') {
+         history.push('/admin/dashboard');
+      } else {
+         history.push('/user/history');
+      }
+   };
 
    const [loading, setLoading] = useState(false);
 
@@ -49,17 +44,22 @@ const Login = ({ history }) => {
          const idTokenResult = await user.getIdTokenResult();
 
          createOrUpdateUser(idTokenResult.token)
-            .then((res) => console.log('CREATE OR UPDATE RES: ', res))
-            .catch();
+            .then((res) => {
+               dispatch({
+                  type: types.authLogin,
+                  payload: {
+                     name: res.data.name,
+                     email: res.data.email,
+                     token: idTokenResult,
+                     role: res.data.role,
+                     _id: res.data._id,
+                  },
+               });
+               roleBasedRedirect(res);
+            })
+            .catch((err) => console.log(err));
 
-         dispatch({
-            type: types.authLogin,
-            payload: {
-               email: user.email,
-               token: idTokenResult,
-            },
-         });
-         history.push('/');
+         // history.push('/');
       } catch (error) {
          console.log(error);
          toast.error(error.message);
@@ -75,14 +75,22 @@ const Login = ({ history }) => {
          .then(async (result) => {
             const { user } = result;
             const idTokenResult = await user.getIdTokenResult();
-            dispatch({
-               type: types.authLogin,
-               payload: {
-                  email: user.email,
-                  token: idTokenResult,
-               },
-            });
-            history.push('/');
+            createOrUpdateUser(idTokenResult.token)
+               .then((res) => {
+                  dispatch({
+                     type: types.authLogin,
+                     payload: {
+                        name: res.data.name,
+                        email: res.data.email,
+                        token: idTokenResult,
+                        role: res.data.role,
+                        _id: res.data._id,
+                     },
+                  });
+                  roleBasedRedirect(res);
+               })
+               .catch((err) => console.log(err));
+            // history.push('/');
          })
          .catch((err) => {
             console.log(err);

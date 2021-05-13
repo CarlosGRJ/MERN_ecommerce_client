@@ -2,14 +2,20 @@ import React, { useEffect } from 'react';
 import { auth } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
+import { useDispatch } from 'react-redux';
+import { types } from '../../types/types';
+import { createOrUpdateUser } from '../../functions/auth';
+
 
 export const RegisterComplete = ({ history }) => {
    const [formValues, handleInputChange] = useForm({
       email: `${window.localStorage.getItem('emailForRegistration') || ''}`,
       password: '',
    });
-
    const { email, password } = formValues;
+
+   // const { user } = useSelector((state) => ({ ...state }));
+   const dispatch = useDispatch();
 
    useEffect(() => {
       //   console.log(window.localStorage.getItem('emailForRegistration'));
@@ -44,6 +50,22 @@ export const RegisterComplete = ({ history }) => {
             const idTokenResult = await user.getIdTokenResult();
             // redux store
             console.log('USER', user, 'idTokenResult ', idTokenResult);
+
+            createOrUpdateUser(idTokenResult.token)
+            .then((res) => {
+               dispatch({
+                  type: types.authLogin,
+                  payload: {
+                     name: res.data.name,
+                     email: res.data.email,
+                     token: idTokenResult,
+                     role: res.data.role,
+                     _id: res.data._id,
+                  },
+               });
+            })
+            .catch(err => console.log(err));
+
             // redirect
             history.push('/');
          }

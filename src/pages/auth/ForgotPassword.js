@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
-import { types } from '../../types/types';
+// import { types } from '../../types/types';
 import { useSelector } from 'react-redux';
 
 export const ForgotPassword = ({ history }) => {
