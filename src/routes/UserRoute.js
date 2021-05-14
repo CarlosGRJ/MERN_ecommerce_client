@@ -7,7 +7,7 @@ export const UserRoute = ({ children, ...rest }) => {
    const { user } = useSelector((state) => ({ ...state }));
 
    return user && user.token ? (
-      <Route {...rest} render={() => children} />
+      <Route {...rest} />
    ) : (
       <LoadingToRedirect />
    );

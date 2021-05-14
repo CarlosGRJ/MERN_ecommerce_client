@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { auth } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
@@ -17,10 +17,10 @@ export const RegisterComplete = ({ history }) => {
    // const { user } = useSelector((state) => ({ ...state }));
    const dispatch = useDispatch();
 
-   useEffect(() => {
+   // useEffect(() => {
       //   console.log(window.localStorage.getItem('emailForRegistration'));
       //   console.log(window.location.href);
-   }, []);
+   // }, []);
 
    const handleSubmit = async (e) => {
       e.preventDefault();
