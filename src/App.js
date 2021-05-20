@@ -36,14 +36,15 @@ const App = () => {
 
             currentUser(idTokenResult.token)
                .then((res) => {
+                  console.log('RES NOW ', res);
                   dispatch({
                      type: types.authLogin,
                      payload: {
-                        name: res.data.name,
-                        email: res.data.email,
+                        name: res.data.user.name,
+                        email: res.data.user.email,
                         token: idTokenResult.token,
-                        role: res.data.role,
-                        _id: res.data._id,
+                        role: res.data.user.role,
+                        _id: res.data.user._id,
                      },
                   });
                })
