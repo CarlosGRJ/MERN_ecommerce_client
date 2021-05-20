@@ -107,15 +107,15 @@ export const CategoryCreate = () => {
                {categoryForm()}
                <hr />
                {categories.map((c) => (
-                  <div className='alert alert-primary' key={c._id}>
+                  <div className='alert alert-secondary' key={c._id}>
                      {c.name}
                      <span
                         onClick={() => handleRemove(c.slug, c.name)}
-                        className='btn btn-sm float-right'>
+                        className='btn btn-sm float-right d-flex align-items-center'>
                         <DeleteOutlined className='text-danger' />
                      </span>
                      <Link to={`/admin/category/${c.slug}`}>
-                        <span className='btn btn-sm float-right'>
+                        <span className='btn btn-sm float-right d-flex align-items-center'>
                            <EditOutlined className='text-primary' />
                         </span>
                      </Link>
