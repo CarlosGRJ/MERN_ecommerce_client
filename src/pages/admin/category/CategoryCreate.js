@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AdminNav } from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
-import { useForm } from '../../../hooks/useForm';
 import {
    createCategory,
    getCategories,
@@ -10,9 +9,12 @@ import {
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CategoryForm } from '../../../components/forms/CategoryForm';
 
 export const CategoryCreate = () => {
    const { user } = useSelector((state) => ({ ...state }));
+
+   const [name, setName] = useState('');
    const [loading, setLoading] = useState(false);
    const [categories, setCategories] = useState([]);
 
@@ -26,19 +28,14 @@ export const CategoryCreate = () => {
       });
    };
 
-   const [formValues, handleInputChange, reset] = useForm({
-      name: '',
-   });
-   const { name } = formValues;
-
    const handleSubmit = (e) => {
       e.preventDefault();
       setLoading(true);
       createCategory({ name }, user.token)
          .then((res) => {
-            console.log('res ', res);
+            // console.log('res ', res);
             setLoading(false);
-            reset();
+            setName('');
             toast.success(`"${res.data.category.name}" is created`);
             loadCategories();
          })
@@ -73,25 +70,6 @@ export const CategoryCreate = () => {
       }
    };
 
-   const categoryForm = () => (
-      <form onSubmit={handleSubmit}>
-         <div className='form-group'>
-            <label>Name</label>
-            <input
-               type='text'
-               className='form-control'
-               name='name'
-               value={name}
-               onChange={handleInputChange}
-               autoFocus
-               required
-            />
-            <br />
-            <button className='btn btn-outline-primary'>Save</button>
-         </div>
-      </form>
-   );
-
    return (
       <div className='container-fluid'>
          <div className='row'>
@@ -104,7 +82,13 @@ export const CategoryCreate = () => {
                ) : (
                   <h4>Create category</h4>
                )}
-               {categoryForm()}
+
+               <CategoryForm
+                  handleSubmit={handleSubmit}
+                  name={name}
+                  setName={setName}
+               />
+
                <hr />
                {categories.map((c) => (
                   <div className='alert alert-secondary' key={c._id}>
