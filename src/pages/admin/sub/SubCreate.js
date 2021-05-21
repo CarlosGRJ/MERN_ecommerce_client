@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AdminNav } from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
-import { createSub, getSub, removeSub } from '../../../functions/sub';
+import { createSub, getSubs, removeSub } from '../../../functions/sub';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -16,12 +16,15 @@ export const SubCreate = () => {
    const [loading, setLoading] = useState(false);
    const [categories, setCategories] = useState([]);
    const [category, setCategory] = useState('');
+   const [subs, setSubs] = useState([]);
+
    // Searching Filtering
    // Step 1
    const [keyword, setKeyword] = useState('');
 
    useEffect(() => {
       loadCategories();
+      loadSubs();
    }, []);
 
    const loadCategories = () => {
@@ -30,16 +33,23 @@ export const SubCreate = () => {
       });
    };
 
+   const loadSubs = () => {
+      getSubs().then((s) => {
+        //  console.log('s ', s);
+         setSubs(s.data.subs);
+      });
+   };
+
    const handleSubmit = (e) => {
       e.preventDefault();
       setLoading(true);
       createSub({ name, parent: category }, user.token)
          .then((res) => {
-            console.log('res ', res);
+            // console.log('res ', res);
             setLoading(false);
             setName('');
             toast.success(`"${res.data.sub.name}" is created`);
-            // loadCategories();
+            loadSubs();
          })
          .catch((err) => {
             console.log(err);
@@ -60,7 +70,7 @@ export const SubCreate = () => {
             .then((res) => {
                setLoading(false);
                toast.error(`${res.data.deleted.name} deleted`);
-               //    loadCategories();
+               loadSubs();
             })
             .catch((err) => {
                console.log(err);
@@ -97,39 +107,38 @@ export const SubCreate = () => {
                      <option>Please select</option>
                      {categories.length > 0 &&
                         categories.map((c) => (
-                           <option kwy={c._id} value={c._id}>
+                           <option key={c._id} value={c._id}>
                               {c.name}
                            </option>
                         ))}
                   </select>
                </div>
 
-               {JSON.stringify(category)}
-
                <CategoryForm
                   handleSubmit={handleSubmit}
                   name={name}
                   setName={setName}
                />
+
                {/* step 2 and step 3 */}
                <LocalSearch keyword={keyword} setKeyword={setKeyword} />
 
                {/* step 5 */}
-               {/* {categories.filter(searched(keyword)).map((c) => (
-                  <div className='alert alert-secondary' key={c._id}>
-                     {c.name}
+               {subs.filter(searched(keyword)).map((s) => (
+                  <div className='alert alert-secondary' key={s._id}>
+                     {s.name} - <strong>{s.parent.name}</strong>
                      <span
-                        onClick={() => handleRemove(c.slug, c.name)}
+                        onClick={() => handleRemove(s.slug, s.name)}
                         className='btn btn-sm float-right d-flex align-items-center'>
                         <DeleteOutlined className='text-danger' />
                      </span>
-                     <Link to={`/admin/category/${c.slug}`}>
+                     <Link to={`/admin/sub/${s.slug}`}>
                         <span className='btn btn-sm float-right d-flex align-items-center'>
                            <EditOutlined className='text-primary' />
                         </span>
                      </Link>
                   </div>
-               ))} */}
+               ))}
             </div>
          </div>
       </div>
