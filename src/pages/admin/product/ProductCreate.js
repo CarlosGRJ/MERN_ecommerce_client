@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { ProductCreateForm } from '../../../components/forms/ProductCreateForm';
 import { AdminNav } from '../../../components/nav/AdminNav';
-import { getCategories } from '../../../functions/category';
+import { getCategories, getCategorySubs } from '../../../functions/category';
 import { createProduct } from '../../../functions/product';
 
 const initialState = {
@@ -24,6 +24,10 @@ const initialState = {
 
 export const ProductCreate = () => {
    const [values, setValues] = useState(initialState);
+   const [subOptions, setSubOptions] = useState([]);
+   const [showSub, setShowSub] = useState(false);
+
+   //  Redux
    const { user } = useSelector((state) => ({ ...state }));
 
    useEffect(() => {
@@ -32,10 +36,8 @@ export const ProductCreate = () => {
 
    const loadCategories = () => {
       getCategories().then((c) => {
-         console.log('c ', c);
          // setValues({ ...values, categories: c.data.categories });
          setValues((prevState) => {
-            console.log('prevState ', prevState);
             return { ...prevState, categories: c.data.categories };
          });
       });
@@ -59,8 +61,23 @@ export const ProductCreate = () => {
    };
 
    const handleChange = (e) => {
-      setValues({ ...values, [e.target.name]: e.target.value });
-      // console.log(e.target.name, ' ------- ', e.target.value);
+      // setValues({ ...values, [e.target.name]: e.target.value });
+      setValues((prevState) => {
+         return { ...prevState, [e.target.name]: e.target.value };
+      });
+   };
+
+   const handleCategoryChange = (e) => {
+      e.preventDefault();
+      // console.log('CLICKED CATEGORY', e.target.value);
+      setValues((prevState) => {
+         return { ...prevState, subs: [], category: e.target.value };
+      });
+      getCategorySubs(e.target.value).then((res) => {
+         // console.log('SUB OPTIONS ON CATEGORY CLICK', res);
+         setSubOptions(res.data);
+      });
+      setShowSub(true);
    };
 
    return (
@@ -78,6 +95,10 @@ export const ProductCreate = () => {
                   handleSubmit={handleSubmit}
                   handleChange={handleChange}
                   values={values}
+                  handleCategoryChange={handleCategoryChange}
+                  subOptions={subOptions}
+                  showSub={showSub}
+                  setValues={setValues}
                />
             </div>
          </div>
