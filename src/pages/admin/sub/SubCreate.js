@@ -35,7 +35,6 @@ export const SubCreate = () => {
 
    const loadSubs = () => {
       getSubs().then((s) => {
-        //  console.log('s ', s);
          setSubs(s.data.subs);
       });
    };

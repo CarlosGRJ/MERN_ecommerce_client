@@ -11,14 +11,17 @@ export const CategoryUpdate = ({ history, match }) => {
    const [loading, setLoading] = useState(false);
 
    useEffect(() => {
-      loadCategory();
-   }, []);
-
-   const loadCategory = () => {
+      // loadCategory();  =====> Warning missing dependency 
       getCategory(match.params.slug).then((c) => {
          setName(c.data.category.name);
       });
-   };
+   }, [match.params.slug]);
+
+   // const loadCategory = () => {
+   //    getCategory(match.params.slug).then((c) => {
+   //       setName(c.data.category.name);
+   //    });
+   // };
 
    const handleSubmit = (e) => {
       e.preventDefault();

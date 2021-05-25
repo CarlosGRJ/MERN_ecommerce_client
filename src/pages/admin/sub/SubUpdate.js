@@ -16,8 +16,12 @@ export const SubUpdate = ({ history, match }) => {
 
    useEffect(() => {
       loadCategories();
-      loadSub();
-   }, []);
+      // loadSub();  ====> warning missing dependency even if i put match.params.slug in my dependencies
+      getSub(match.params.slug).then((s) => {
+         setName(s.data.sub.name);
+         setParent(s.data.sub.parent._id);
+      });
+   }, [match.params.slug]);
 
    const loadCategories = () => {
       getCategories().then((c) => {
@@ -25,13 +29,13 @@ export const SubUpdate = ({ history, match }) => {
       });
    };
 
-   const loadSub = () => {
-      getSub(match.params.slug).then((s) => {
-        //  console.log('s ', s);
-         setName(s.data.sub.name);
-         setParent(s.data.sub.parent._id);
-      });
-   };
+   // const loadSub = () => {
+   //    getSub(match.params.slug).then((s) => {
+   //      //  console.log('s ', s);
+   //       setName(s.data.sub.name);
+   //       setParent(s.data.sub.parent._id);
+   //    });
+   // };
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -74,7 +78,10 @@ export const SubUpdate = ({ history, match }) => {
                      <option>Please select</option>
                      {categories.length > 0 &&
                         categories.map((c) => (
-                           <option key={c._id} value={c._id} selected={c._id === parent} >
+                           <option
+                              key={c._id}
+                              value={c._id}
+                              selected={c._id === parent}>
                               {c.name}
                            </option>
                         ))}

@@ -25,6 +25,7 @@ import { CategoryCreate } from './pages/admin/category/CategoryCreate';
 import { CategoryUpdate } from './pages/admin/category/CategoryUpdate';
 import { SubCreate } from './pages/admin/sub/SubCreate';
 import { SubUpdate } from './pages/admin/sub/SubUpdate';
+import { ProductCreate } from './pages/admin/product/ProductCreate';
 
 const App = () => {
    const dispatch = useDispatch();
@@ -34,11 +35,11 @@ const App = () => {
       const unsubscribe = auth.onAuthStateChanged(async (user) => {
          if (user) {
             const idTokenResult = await user.getIdTokenResult();
-            console.log('user', user);
+            // console.log('user', user);
 
             currentUser(idTokenResult.token)
                .then((res) => {
-                  console.log('RES NOW ', res);
+                  // console.log('RES NOW ', res);
                   dispatch({
                      type: types.authLogin,
                      payload: {
@@ -96,6 +97,11 @@ const App = () => {
                exact
                path='/admin/sub/:slug'
                component={SubUpdate}
+            />
+            <AdminRoute
+               exact
+               path='/admin/product'
+               component={ProductCreate}
             />
          </Switch>
       </>
