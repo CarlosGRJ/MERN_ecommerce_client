@@ -25,34 +25,19 @@ const initialState = {
 export const ProductCreate = () => {
    const [values, setValues] = useState(initialState);
    const { user } = useSelector((state) => ({ ...state }));
-   const {
-      title,
-      description,
-      price,
-      categories,
-      category,
-      subs,
-      shipping,
-      quantity,
-      images,
-      colors,
-      brands,
-      color,
-      brand,
-   } = values;
 
    useEffect(() => {
       loadCategories();
-      // getCategories().then((c) => {
-      //    console.log('c ', c);
-      //    setValues({ ...values, categories: c.data.categories });
-      // });
    }, []);
 
    const loadCategories = () => {
       getCategories().then((c) => {
          console.log('c ', c);
-         setValues({ ...values, categories: c.data.categories });
+         // setValues({ ...values, categories: c.data.categories });
+         setValues((prevState) => {
+            console.log('prevState ', prevState);
+            return { ...prevState, categories: c.data.categories };
+         });
       });
    };
 
