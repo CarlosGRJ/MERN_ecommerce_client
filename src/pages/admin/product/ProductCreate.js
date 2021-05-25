@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { ProductCreateForm } from '../../../components/forms/ProductCreateForm';
 import { AdminNav } from '../../../components/nav/AdminNav';
+import { getCategories } from '../../../functions/category';
 import { createProduct } from '../../../functions/product';
 
 const initialState = {
@@ -39,6 +40,21 @@ export const ProductCreate = () => {
       color,
       brand,
    } = values;
+
+   useEffect(() => {
+      loadCategories();
+      // getCategories().then((c) => {
+      //    console.log('c ', c);
+      //    setValues({ ...values, categories: c.data.categories });
+      // });
+   }, []);
+
+   const loadCategories = () => {
+      getCategories().then((c) => {
+         console.log('c ', c);
+         setValues({ ...values, categories: c.data.categories });
+      });
+   };
 
    const handleSubmit = (e) => {
       e.preventDefault();
