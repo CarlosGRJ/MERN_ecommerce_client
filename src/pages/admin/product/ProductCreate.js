@@ -5,19 +5,19 @@ import { AdminNav } from '../../../components/nav/AdminNav';
 import { createProduct } from '../../../functions/product';
 
 const initialState = {
-   title: '',
-   description: '',
-   price: '',
+   title: 'Macbook Pro',
+   description: 'Apple Product',
+   price: '4500',
    categories: [],
    category: '',
    subs: [],
-   shipping: '',
-   quantity: '',
+   shipping: 'Yes',
+   quantity: '50',
    images: [],
    colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
    brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
-   color: '',
-   brand: '',
+   color: 'White',
+   brand: 'Apple',
 };
 
 export const ProductCreate = () => {
@@ -44,12 +44,15 @@ export const ProductCreate = () => {
       createProduct(values, user.token)
          .then((res) => {
             console.log(res);
+            window.alert(`"${res.data.title}" is created`);
+            window.location.reload();
          })
          .catch((err) => {
             console.log(err);
-            if (err.response.status === 400) {
-               toast.error(err.response.data);
-            }
+            // if (err.response.status === 400) {
+            //    toast.error(err.response.data);
+            // }
+            toast.error(err.response.data.err);
          });
    };
 
