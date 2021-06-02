@@ -17,15 +17,15 @@ export const ProductCreateForm = ({
       description,
       price,
       categories,
-      category,
+      // category,
       subs,
-      shipping,
+      // shipping,
       quantity,
-      images,
+      // images,
       colors,
       brands,
-      color,
-      brand,
+      // color,
+      // brand,
    } = values;
 
    return (

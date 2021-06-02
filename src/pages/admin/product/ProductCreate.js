@@ -6,6 +6,7 @@ import { ProductCreateForm } from '../../../components/forms/ProductCreateForm';
 import { AdminNav } from '../../../components/nav/AdminNav';
 import { getCategories, getCategorySubs } from '../../../functions/category';
 import { createProduct } from '../../../functions/product';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const initialState = {
    title: 'Macbook Pro',
@@ -90,7 +91,7 @@ export const ProductCreate = () => {
             </div>
 
             <div className='col-md-10'>
-               <h4>Product Create</h4>
+               {loading ? <LoadingOutlined className='text-danger h1' /> : <h4>Product Create</h4>}
                <hr />
 
                {JSON.stringify(values.images)}

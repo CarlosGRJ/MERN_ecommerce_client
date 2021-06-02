@@ -2,7 +2,7 @@ import React from 'react';
 import Resizer from 'react-image-file-resizer';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Avatar } from 'antd';
+import { Avatar, Badge } from 'antd';
 
 export const FileUpload = ({ values, setValues, setLoading }) => {
    const { user } = useSelector((state) => ({ ...state }));
@@ -53,13 +53,54 @@ export const FileUpload = ({ values, setValues, setLoading }) => {
       }
    };
 
+   const handleImageRemove = (public_id) => {
+      setLoading(true);
+      console.log('remove image', public_id);
+      axios
+         .post(
+            `${process.env.REACT_APP_API}/removeimage`,
+            { public_id },
+            {
+               headers: {
+                  authtoken: user ? user.token : '',
+               },
+            },
+         )
+         .then((res) => {
+            setLoading(false);
+            const { images } = values;
+            console.log('images ', images);
+            const filteredImages = images.filter((item) => {
+               console.log('ITEM', item);
+               return item.public_id !== public_id;
+            });
+            console.log('FILTERED IMAGES', filteredImages);
+            setValues((prevState) => {
+               return { ...prevState, images: filteredImages };
+            });
+            console.log(values.images);
+         })
+         .catch((err) => {
+            console.log(err);
+            setLoading(false);
+         });
+   };
+
    return (
       <>
-      <div className="row">
-         {values.images && values.images.map((image) => (
-            <Avatar key={image.public_id} src={image.url} size={100} className='m-3' />
-         ))}
-      </div>
+         <div className='row'>
+            {values.images &&
+               values.images.map((image) => (
+                  <Badge
+                     className='mr-3 mb-3'
+                     count='X'
+                     key={image.public_id}
+                     onClick={() => handleImageRemove(image.public_id)}
+                     style={{ cursor: 'pointer' }}>
+                     <Avatar src={image.url} size={100} shape='square' />
+                  </Badge>
+               ))}
+         </div>
          <div className='row'>
             <label className='btn btn-primary btn-raised'>
                Choose File
