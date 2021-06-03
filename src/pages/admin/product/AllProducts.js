@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { AdminProductCard } from '../../../components/cards/AdminProductCard';
 import { AdminNav } from '../../../components/nav/AdminNav';
-import { getProductsByCount } from '../../../functions/product';
+import { getProductsByCount, removeProduct } from '../../../functions/product';
 
 export const AllProducts = () => {
    const [products, setProducts] = useState([]);
    const [loading, setLoading] = useState(false);
+   // redux
+   const { user } = useSelector((state) => ({ ...state }));
 
    useEffect(() => {
       loadAllProducts();
@@ -25,6 +29,27 @@ export const AllProducts = () => {
          });
    };
 
+   const handleRemove = (slug) => {
+      const answer = window.confirm(
+         'Are you sure you want to delete this product?',
+      );
+      if (answer) {
+         // console.log('send delete request', slug);
+         removeProduct(slug, user.token)
+            .then((res) => {
+               console.log('res', res);
+               loadAllProducts();
+               toast.error(`${res.data.title} is deleted`);
+            })
+            .catch((err) => {
+               console.log(err);
+               if (err.response.status === 400) {
+                  toast.error(err.response.data);
+               }
+            });
+      }
+   };
+
    return (
       <div className='container-fluid'>
          <div className='row'>
@@ -40,8 +65,11 @@ export const AllProducts = () => {
                )}
                <div className='row'>
                   {products.map((product) => (
-                     <div className='col-md-4' key={product._id}>
-                        <AdminProductCard product={product} />
+                     <div className='col-md-4 pb-3' key={product._id}>
+                        <AdminProductCard
+                           product={product}
+                           handleRemove={handleRemove}
+                        />
                      </div>
                   ))}
                </div>
