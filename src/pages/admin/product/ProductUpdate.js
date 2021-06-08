@@ -7,12 +7,12 @@ import { AdminNav } from '../../../components/nav/AdminNav';
 import { getProduct } from '../../../functions/product';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
+import { getCategories, getCategorySubs } from '../../../functions/category';
 
 const initialState = {
    title: '',
    description: '',
    price: '',
-   categories: [],
    category: '',
    subs: [],
    shipping: '',
@@ -27,6 +27,10 @@ const initialState = {
 export const ProductUpdate = ({ match }) => {
    // state
    const [values, setValues] = useState(initialState);
+   const [categories, setCategories] = useState([]);
+   const [subOptions, setSubOptions] = useState([]);
+   const [arrayOfSubsIds, setArrayOfSubsIds] = useState([]);
+   const [selectedCategory, setSelectedCategory] = useState('');
 
    //  Redux
    const { user } = useSelector((state) => ({ ...state }));
@@ -34,27 +38,52 @@ export const ProductUpdate = ({ match }) => {
    const { slug } = match.params;
 
    useEffect(() => {
-      // loadProduct();
+      loadProduct(slug);
+      loadCategories();
+   }, [slug]);
+
+   const loadProduct = (slug) => {
       getProduct(slug)
          .then((p) => {
-            // console.log('single product', p);
+            // 1. load single product
             setValues((prevState) => {
                return { ...prevState, ...p.data };
             });
+            // 2. load single product category subs
+            getCategorySubs(p.data.category._id).then((res) => {
+               setSubOptions(res.data);
+            });
+            // 3. prepare array of sub ids to show as default sub values in antd Select
+            let arr = [];
+            p.data.subs.map((s) => {
+               return arr.push(s._id);
+            });
+            // console.log('ARR', arr);
+            setArrayOfSubsIds((prev) => arr); // required for ant design select to work
          })
-         .catch();
-   }, [slug]);
+         .catch((err) => {
+            console.log('ERROR get product', err);
+            // setLoading(false);
+            // if (err.response.status === 400) {
+            //    toast.error(err.response.data);
+            // }
+         });
+   };
 
-   // const loadProduct = () => {
-   //    getProduct(slug)
-   //       .then((p) => {
-   //          // console.log('single product', p);
-   //          setValues((prevState) => {
-   //             return { ...prevState, ...p.data }
-   //          })
-   //       })
-   //       .catch();
-   // };
+   const loadCategories = () => {
+      getCategories()
+         .then((c) => {
+            // console.log('categories update product: ', c.data.categories);
+            setCategories(c.data.categories);
+         })
+         .catch((err) => {
+            console.log('ERROR get categories', err);
+            // setLoading(false);
+            // if (err.response.status === 400) {
+            //    toast.error(err.response.data);
+            // }
+         });
+   };
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -65,6 +94,29 @@ export const ProductUpdate = ({ match }) => {
       setValues((prevState) => {
          return { ...prevState, [e.target.name]: e.target.value };
       });
+   };
+
+   const handleCategoryChange = (e) => {
+      e.preventDefault();
+      // console.log('CLICKED CATEGORY', e.target.value);
+      setValues((prevState) => {
+         return { ...prevState, subs: [] };
+      });
+
+      setSelectedCategory(e.target.value);
+
+      getCategorySubs(e.target.value).then((res) => {
+         // console.log('SUB OPTIONS ON CATEGORY CLICK', res);
+         setSubOptions(res.data);
+      });
+
+      // if user clicks back to the original category
+      // show its sub categories in default
+      if (values.category._id === e.target.value) {
+         loadProduct(slug);
+      }
+      // Clear old sub categories ids
+      setArrayOfSubsIds([]);
    };
 
    return (
@@ -81,11 +133,15 @@ export const ProductUpdate = ({ match }) => {
                <ProductUpdateForm
                   handleSubmit={handleSubmit}
                   handleChange={handleChange}
-                  values={values}
-                  // handleCategoryChange={handleCategoryChange}
-                  // subOptions={subOptions}
-                  // showSub={showSub}
                   setValues={setValues}
+                  values={values}
+                  handleCategoryChange={handleCategoryChange}
+                  categories={categories}
+                  subOptions={subOptions}
+                  // showSub={showSub}
+                  arrayOfSubsIds={arrayOfSubsIds}
+                  setArrayOfSubsIds={setArrayOfSubsIds}
+                  selectedCategory={selectedCategory}
                />
                <hr />
             </div>
