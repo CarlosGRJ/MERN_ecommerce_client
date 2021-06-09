@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { FileUpload } from '../../../components/forms/FileUpload';
 import { ProductUpdateForm } from '../../../components/forms/ProductUpdateForm';
 import { AdminNav } from '../../../components/nav/AdminNav';
-import { getProduct } from '../../../functions/product';
+import { getProduct, updateProduct } from '../../../functions/product';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { getCategories, getCategorySubs } from '../../../functions/category';
@@ -24,7 +24,7 @@ const initialState = {
    brand: '',
 };
 
-export const ProductUpdate = ({ match }) => {
+export const ProductUpdate = ({ match, history }) => {
    // state
    const [values, setValues] = useState(initialState);
    const [categories, setCategories] = useState([]);
@@ -64,10 +64,8 @@ export const ProductUpdate = ({ match }) => {
          })
          .catch((err) => {
             console.log('ERROR get product', err);
-            // setLoading(false);
-            // if (err.response.status === 400) {
-            //    toast.error(err.response.data);
-            // }
+            setLoading(false);
+            toast.error(err);
          });
    };
 
@@ -79,15 +77,30 @@ export const ProductUpdate = ({ match }) => {
          })
          .catch((err) => {
             console.log('ERROR get categories', err);
-            // setLoading(false);
-            // if (err.response.status === 400) {
-            //    toast.error(err.response.data);
-            // }
+            setLoading(false);
+            toast.error(err);
          });
    };
 
    const handleSubmit = (e) => {
       e.preventDefault();
+      setLoading(true);
+
+      values.subs = arrayOfSubsIds;
+      values.category = selectedCategory ? selectedCategory : values.category;
+
+      // console.log('VALUES SUBMITED ', values);
+      updateProduct(slug, values, user.token)
+         .then((res) => {
+            setLoading(false);
+            toast.success(`"${res.data.title}" is updated`);
+            history.push('/admin/products');
+         })
+         .catch((err) => {
+            console.log(err);
+            setLoading(false);
+            toast.error(err.response.data.err);
+         });
    };
 
    const handleChange = (e) => {
@@ -133,7 +146,7 @@ export const ProductUpdate = ({ match }) => {
                ) : (
                   <h4>Product update</h4>
                )}
-               {JSON.stringify(values)}
+               {/* {JSON.stringify(values)} */}
 
                <div className='p-3'>
                   <FileUpload
