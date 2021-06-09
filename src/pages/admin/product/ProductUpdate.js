@@ -31,6 +31,7 @@ export const ProductUpdate = ({ match }) => {
    const [subOptions, setSubOptions] = useState([]);
    const [arrayOfSubsIds, setArrayOfSubsIds] = useState([]);
    const [selectedCategory, setSelectedCategory] = useState('');
+   const [loading, setLoading] = useState(false);
 
    //  Redux
    const { user } = useSelector((state) => ({ ...state }));
@@ -127,8 +128,20 @@ export const ProductUpdate = ({ match }) => {
             </div>
 
             <div className='col-md-10'>
-               <h4>Product Update</h4>
+               {loading ? (
+                  <LoadingOutlined className='text-danger h1' />
+               ) : (
+                  <h4>Product update</h4>
+               )}
                {JSON.stringify(values)}
+
+               <div className='p-3'>
+                  <FileUpload
+                     values={values}
+                     setValues={setValues}
+                     setLoading={setLoading}
+                  />
+               </div>
 
                <ProductUpdateForm
                   handleSubmit={handleSubmit}
