@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Jumbotron } from '../components/cards/Jumbotron';
 import { ProductCard } from '../components/cards/ProductCard';
 import { getProductsByCount } from '../functions/product';
 
@@ -20,8 +21,10 @@ const Home = () => {
 
    return (
       <>
-         <div className='jumbotron'>
-            {loading ? <h4>Loading...</h4> : <h4>All Products</h4>}
+         <div className='jumbotron text-danger h1 font-weight-bold text-center'>
+            <Jumbotron
+               text={['Latest Products', 'New Arrivals', 'Best Sellers']}
+            />
          </div>
 
          <div className='container'>
