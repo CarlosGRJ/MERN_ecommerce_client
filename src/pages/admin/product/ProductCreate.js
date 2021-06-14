@@ -19,7 +19,7 @@ const initialState = {
    quantity: '50',
    images: [],
    colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
-   brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
+   brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS', 'DELL'],
    color: 'White',
    brand: 'Apple',
 };
@@ -94,7 +94,7 @@ export const ProductCreate = () => {
                {loading ? <LoadingOutlined className='text-danger h1' /> : <h4>Product Create</h4>}
                <hr />
 
-               {JSON.stringify(values.images)}
+               {/* {JSON.stringify(values.images)} */}
 
                <div className='p-3'>
                   <FileUpload
