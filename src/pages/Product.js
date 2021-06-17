@@ -22,7 +22,11 @@ export const Product = ({ match }) => {
          </div>
 
          <div className='row'>
-            <div>Related Products</div>
+            <div className='col text-center py-5'>
+               <hr />
+               <h4>Related Products</h4>
+               <hr />
+            </div>
          </div>
       </div>
    );
