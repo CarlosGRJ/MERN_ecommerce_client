@@ -7,6 +7,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import Laptop from '../../images/macbookpro.webp'; // Default Image
 import { ProductListItems } from './ProductListItems';
+import { RatingModal } from '../modal/RatingModal';
 
 const { TabPane } = Tabs;
 
@@ -42,16 +43,7 @@ export const SingleProduct = ({ product }) => {
 
          <div className='col-md-5'>
             <h1 className='bg-info p-3'>{title}</h1>
-            <StarRating
-               name={_id}
-               numberOfStars={5}
-               rating={2}
-               changeRating={(newRating, name) =>
-                  console.log('New rating', newRating, 'name', name)
-               }
-               isSelectable={true}
-               starRatedColor='orangered'
-            />
+
             <Card
                actions={[
                   <>
@@ -62,6 +54,18 @@ export const SingleProduct = ({ product }) => {
                      <HeartOutlined className='text-info' /> <br /> Add to
                      Wishlist
                   </Link>,
+                  <RatingModal>
+                     <StarRating
+                        name={_id}
+                        numberOfStars={5}
+                        rating={2}
+                        changeRating={(newRating, name) =>
+                           console.log('New rating', newRating, 'name', name)
+                        }
+                        isSelectable={true}
+                        starRatedColor='orangered'
+                     />
+                  </RatingModal>,
                ]}>
                <ProductListItems product={product} />
             </Card>
