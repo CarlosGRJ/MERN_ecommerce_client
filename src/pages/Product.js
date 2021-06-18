@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { getProduct, productStar } from '../functions/product';
 import { SingleProduct } from '../components/cards/SingleProduct';
-import { useSelector } from 'react-redux';
 
 export const Product = ({ match }) => {
    const [product, setProduct] = useState({});
@@ -20,7 +20,7 @@ export const Product = ({ match }) => {
          const existingRatingObject = product.ratings.find(
             (ele) => ele.postedBy.toString() === user._id.toString(),
          );
-         console.log('existingRatingObject ', existingRatingObject);
+         // console.log('existingRatingObject ', existingRatingObject);
          existingRatingObject && setStar(existingRatingObject.star); // current user's star
       }
    }, [product, user]);
