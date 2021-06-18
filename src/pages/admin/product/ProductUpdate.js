@@ -6,7 +6,6 @@ import { ProductUpdateForm } from '../../../components/forms/ProductUpdateForm';
 import { AdminNav } from '../../../components/nav/AdminNav';
 import { getProduct, updateProduct } from '../../../functions/product';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
 import { getCategories, getCategorySubs } from '../../../functions/category';
 
 const initialState = {

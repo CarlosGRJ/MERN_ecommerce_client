@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 import { toast } from 'react-toastify';
 import { StarOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';

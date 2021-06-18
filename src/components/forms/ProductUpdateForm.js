@@ -22,7 +22,7 @@ export const ProductUpdateForm = ({
       price,
       //   categories,
       category,
-      subs,
+      // subs,
       shipping,
       quantity,
       // images,
