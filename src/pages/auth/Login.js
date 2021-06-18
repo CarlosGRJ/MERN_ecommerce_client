@@ -19,14 +19,25 @@ const Login = ({ history }) => {
    const { user } = useSelector((state) => ({ ...state }));
 
    useEffect(() => {
-      if (user && user.token) history.push('/');
+      const intended = history.location.state;
+      if (intended) {
+         return;
+      } else {
+         if (user && user.token) history.push('/');
+      }
    }, [user, history]);
 
    const roleBasedRedirect = (res) => {
-      if (res.data.role === 'admin') {
-         history.push('/admin/dashboard');
+      // check if intended
+      const intended = history.location.state;
+      if (intended) {
+         history.push(intended.from);
       } else {
-         history.push('/user/history');
+         if (res.data.role === 'admin') {
+            history.push('/admin/dashboard');
+         } else {
+            history.push('/user/history');
+         }
       }
    };
 
@@ -45,7 +56,7 @@ const Login = ({ history }) => {
 
          createOrUpdateUser(idTokenResult.token)
             .then((res) => {
-               console.log('res dispatch', res);
+               // console.log('res dispatch', res);
                dispatch({
                   type: types.authLogin,
                   payload: {
