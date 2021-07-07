@@ -1,15 +1,42 @@
-import React from 'react';
-import { Card } from 'antd';
+import React, { useState } from 'react';
+import { Card, Tooltip } from 'antd';
 import { EyeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import laptop from '../../images/macbookpro.webp'; // DEFAULT IMAGE
 import { Link } from 'react-router-dom';
 import { showAverage } from '../../functions/rating';
+import _ from 'lodash';
 
 const { Meta } = Card;
 
 export const ProductCard = ({ product }) => {
+   const [tooltip, setTooltip] = useState('Click to add');
    // destructure
    const { title, description, images, slug, price } = product;
+
+   const handleAddToCart = () => {
+      // create cart array
+      let cart = [];
+
+      if (typeof window !== 'undefined') {
+         // if cart is in localStorage GET it
+         if (localStorage.getItem('cart')) {
+            cart = JSON.parse(localStorage.getItem('cart'));
+         }
+         // push new product to cart
+         cart.push({
+            ...product,
+            count: 1,
+         });
+         console.log('CART --> ', cart);
+         // remove duplicates
+         const unique = _.uniqWith(cart, _.isEqual);
+         console.log('unique ', unique);
+         // save to Local Storage
+         localStorage.setItem('cart', JSON.stringify(unique));
+         // show tooltip
+         setTooltip('Added');
+      }
+   };
 
    return (
       <>
@@ -31,10 +58,12 @@ export const ProductCard = ({ product }) => {
                <Link to={`/product/${slug}`}>
                   <EyeOutlined className='text-primary' /> <br /> View Produt
                </Link>,
-               <>
-                  <ShoppingCartOutlined className='text-danger' /> <br /> Add to
-                  cart
-               </>,
+               <Tooltip title={tooltip}>
+                  <a onClick={handleAddToCart}>
+                     <ShoppingCartOutlined className='text-danger' /> <br /> Add
+                     to cart
+                  </a>
+               </Tooltip>,
             ]}>
             <Meta
                title={`${title} - $${price}`}
