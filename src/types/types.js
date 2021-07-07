@@ -3,4 +3,6 @@ export const types = {
    authLogout: '[auth] LOGOUT',
 
    searchQuery: 'SEARCH_QUERY',
+
+   addToCart: 'ADD_TO_CART',
 };
