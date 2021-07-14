@@ -9,7 +9,7 @@ export const Cart = () => {
 
    const getTotal = () => {
       return cart.reduce((currentValue, nextValue) => {
-         console.log('currentValue', currentValue, 'nextValue', nextValue);
+         // console.log('currentValue', currentValue, 'nextValue', nextValue);
          return currentValue + nextValue.count * nextValue.price;
       }, 0);
    };
