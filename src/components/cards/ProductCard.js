@@ -48,6 +48,11 @@ export const ProductCard = ({ product }) => {
             type: types.addToCart,
             payload: unique,
          });
+         // show cart items in side drawer
+         dispatch({
+            type: types.setVisible,
+            payload: true,
+         });
       }
    };
 

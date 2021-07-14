@@ -52,6 +52,11 @@ export const SingleProduct = ({ product, onStarClick, star }) => {
             type: types.addToCart,
             payload: unique,
          });
+         // show cart items in side drawer
+         dispatch({
+            type: types.setVisible,
+            payload: true,
+         });
       }
    };
 
