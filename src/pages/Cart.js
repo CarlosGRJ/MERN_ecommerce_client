@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ProductCardInCheckout } from '../components/cards/ProductCardInCheckout';
 
-export const Cart = () => {
+export const Cart = ({ history }) => {
    const { cart, user } = useSelector((state) => ({ ...state }));
    const dispatch = useDispatch();
 
@@ -15,7 +15,8 @@ export const Cart = () => {
    };
 
    const saveOrderToDb = () => {
-      //
+      alert('save order to db');
+      history.push('/checkout');
    };
 
    const showCartItems = () => {
@@ -72,6 +73,7 @@ export const Cart = () => {
                <hr />
                {user ? (
                   <button
+                     onClick={saveOrderToDb}
                      className='btn btn-sm btn-pimary mt-2'
                      disabled={!cart.length}>
                      Proceed to Checkout
