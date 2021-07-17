@@ -16,13 +16,9 @@ export const removeCoupon = async (couponId, authtoken) => {
 };
 
 export const createCoupon = async (coupon, authtoken) => {
-   return await axios.post(
-      `${process.env.REACT_APP_API}/coupon`,
-      { coupon },
-      {
-         headers: {
-            authtoken,
-         },
+   return await axios.post(`${process.env.REACT_APP_API}/coupon`, coupon, {
+      headers: {
+         authtoken,
       },
-   );
+   });
 };
