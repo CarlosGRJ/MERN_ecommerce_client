@@ -11,7 +11,7 @@ import { types } from '../types/types';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-export const Checkout = () => {
+export const Checkout = ({ history }) => {
    const [products, setProducts] = useState([]);
    const [total, setTotal] = useState(0);
    const [address, setAddress] = useState('');
@@ -67,12 +67,20 @@ export const Checkout = () => {
          console.log('RES ON COUPON APPLIED', res.data);
          if (res.data) {
             setTotalAfterDiscount(res.data);
-            // update redux coupon applied
+            // update redux coupon applied true/false
+            dispatch({
+               type: types.couponApplied,
+               payload: true,
+            });
          }
          // error
          if (res.data.err) {
             setDiscountError(res.data.err);
-            // update redux coupon applied
+            // update redux coupon applied true/false
+            dispatch({
+               type: types.couponApplied,
+               payload: false,
+            });
          }
       });
    };
@@ -148,7 +156,8 @@ export const Checkout = () => {
                <div className='col-md-6'>
                   <button
                      className='btn btn-primary'
-                     disabled={!addressSaved || !products.length}>
+                     disabled={!addressSaved || !products.length}
+                     onClick={() => history.push('/payment')}>
                      Place Order
                   </button>
                </div>

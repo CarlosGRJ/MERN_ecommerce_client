@@ -7,4 +7,6 @@ export const types = {
    addToCart: 'ADD_TO_CART',
 
    setVisible: 'SET_VISIBLE',
+
+   couponApplied: 'COUPON_APPLIED',
 };
