@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPaymentIntent } from '../functions/stripe';
+import { Link } from 'react-router-dom';
 
 const cardStyle = {
    style: {
@@ -35,22 +36,56 @@ export const StripeCheckout = ({ history }) => {
    const elements = useElements();
 
    useEffect(() => {
-      createPaymentIntent(user.token).then((res) => {
-         console.log('create payment intent', res.data);
-         setClientSecret(res.data.clientSecret);
-      }).catch(err => console.log('err Payment Intent', err));
+      createPaymentIntent(user.token)
+         .then((res) => {
+            console.log('create payment intent', res.data);
+            setClientSecret(res.data.clientSecret);
+         })
+         .catch((err) => console.log('err Payment Intent', err));
    }, [user.token]);
 
    const handleSubmit = async (e) => {
-      //
+      e.preventDefault();
+      setProcessing(true);
+
+      const payload = await stripe.confirmCardPayment(clientSecret, {
+         payment_method: {
+            card: elements.getElement(CardElement),
+            billing_details: {
+               name: e.target.name.value,
+            },
+         },
+      });
+
+      if (payload.error) {
+         setError(`Payment failed ${payload.error.message}`);
+         setProcessing(false);
+      } else {
+         // here you get result after successful payment
+         // create order and save in database for admin to process
+         // empty user cart from redux store and localStorage
+         console.log(payload);
+         setError(null);
+         setProcessing(false);
+         setSucceeded(true);
+      }
    };
 
    const handleChange = async (e) => {
-      //
+      // Listen for changes in the card element
+      // And display any errors the customer types their card details
+      setDisabled(e.empty); // disable pay button if errors
+      //   console.log('e.empty ', e.empty); // true / false
+      setError(e.error ? e.error.message : ''); // show error message
+      console.log('e.error ', e.error);
    };
 
    return (
       <>
+         <p className={succeeded ? 'result-message' : 'result-message hidden'}>
+            Payment Successful.{' '}
+            <Link to='/user/history'>See it in your purchase history.</Link>
+         </p>
          <form
             id='payment-form'
             className='stripe-form'
@@ -71,6 +106,12 @@ export const StripeCheckout = ({ history }) => {
                   )}
                </span>
             </button>
+            <br />
+            {error && (
+               <div className='card-error' role='alert'>
+                  {error}
+               </div>
+            )}
          </form>
       </>
    );
