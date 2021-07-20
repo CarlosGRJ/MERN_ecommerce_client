@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getUserCart, emptyUserCart, saveUserAddress } from '../functions/user';
+import {
+   getUserCart,
+   emptyUserCart,
+   saveUserAddress,
+   applyCoupon,
+} from '../functions/user';
 import { types } from '../types/types';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -12,6 +17,8 @@ export const Checkout = () => {
    const [address, setAddress] = useState('');
    const [addressSaved, setAddressSaved] = useState(false);
    const [coupon, setCoupon] = useState('');
+   const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
+   const [discountError, setDiscountError] = useState('');
 
    const dispatch = useDispatch();
    const { user } = useSelector((state) => ({ ...state }));
@@ -38,6 +45,8 @@ export const Checkout = () => {
       emptyUserCart(user.token).then((res) => {
          setProducts([]);
          setTotal(0);
+         setTotalAfterDiscount(0);
+         setCoupon('');
          toast.success('Cart is empty. Continue Shopping.');
       });
    };
@@ -54,6 +63,18 @@ export const Checkout = () => {
 
    const applyDiscountCoupon = () => {
       console.log('send coupon to backend', coupon);
+      applyCoupon(user.token, coupon).then((res) => {
+         console.log('RES ON COUPON APPLIED', res.data);
+         if (res.data) {
+            setTotalAfterDiscount(res.data);
+            // update redux coupon applied
+         }
+         // error
+         if (res.data.err) {
+            setDiscountError(res.data.err);
+            // update redux coupon applied
+         }
+      });
    };
 
    const showAddress = () => (
@@ -79,7 +100,10 @@ export const Checkout = () => {
    const showApplyCoupon = () => (
       <>
          <input
-            onChange={(e) => setCoupon(e.target.value)}
+            onChange={(e) => {
+               setCoupon(e.target.value);
+               setDiscountError('');
+            }}
             value={coupon}
             type='text'
             className='form-control'
@@ -101,6 +125,8 @@ export const Checkout = () => {
             <h4>Got Coupon?</h4>
             <br />
             {showApplyCoupon()}
+            <br />
+            {discountError && <p className='bg-danger p-2'>{discountError}</p>}
          </div>
 
          <div className='col-md-6'>
@@ -111,6 +137,12 @@ export const Checkout = () => {
             {showProductSummary()}
             <hr />
             <p>Cart Total: ${total}</p>
+
+            {totalAfterDiscount > 0 && (
+               <p className='bg-success p-2'>
+                  Discount Applied: Total Payable: ${totalAfterDiscount}
+               </p>
+            )}
 
             <div className='row'>
                <div className='col-md-6'>
