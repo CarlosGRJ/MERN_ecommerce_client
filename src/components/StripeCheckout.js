@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { Card } from 'antd';
 import { DollarOutlined, CheckOutlined } from '@ant-design/icons';
 import Laptop from '../images/macbookpro.webp'; // default image
+import { createOrder, emptyUserCart } from '../functions/user';
+import { types } from '../types/types';
 
 const cardStyle = {
    style: {
@@ -74,6 +76,27 @@ export const StripeCheckout = ({ history }) => {
       } else {
          // here you get result after successful payment
          // create order and save in database for admin to process
+         createOrder(payload, user.token).then((res) => {
+            console.log('res ', res);
+            if (res.data.ok) {
+               // empty cart from localStorage
+               if (typeof window !== 'undefined') {
+                  localStorage.removeItem('cart');
+               }
+               // empty cart from redux
+               dispatch({
+                  type: types.addToCart,
+                  payload: [],
+               });
+               // reset coupon to false
+               dispatch({
+                  type: types.couponApplied,
+                  payload: false,
+               });
+               // empty cart from database
+               emptyUserCart(user.token);
+            }
+         });
          // empty user cart from redux store and localStorage
          console.log(payload);
          setError(null);
