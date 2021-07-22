@@ -5,7 +5,7 @@ import laptop from '../../images/macbookpro.webp'; // DEFAULT IMAGE
 import { Link } from 'react-router-dom';
 import { showAverage } from '../../functions/rating';
 import _ from 'lodash';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { types } from '../../types/types';
 
 const { Meta } = Card;
@@ -14,7 +14,7 @@ export const ProductCard = ({ product }) => {
    const [tooltip, setTooltip] = useState('Click to add');
 
    // Redux
-   const { user, cart } = useSelector((state) => ({ ...state }));
+   // const { user, cart } = useSelector((state) => ({ ...state }));
    const dispatch = useDispatch();
 
    // destructure
@@ -77,10 +77,12 @@ export const ProductCard = ({ product }) => {
                   <EyeOutlined className='text-primary' /> <br /> View Produt
                </Link>,
                <Tooltip title={tooltip}>
-                  <span onClick={handleAddToCart}>
-                     <ShoppingCartOutlined className='text-danger' /> <br /> Add
-                     to cart
-                  </span>
+                  <Link
+                     onClick={handleAddToCart}
+                     disabled={product.quantity < 1}>
+                     <ShoppingCartOutlined className='text-danger' /> <br />
+                     {product.quantity < 1 ? 'Out of Stock' : 'Add to cart'}
+                  </Link>
                </Tooltip>,
             ]}>
             <Meta
