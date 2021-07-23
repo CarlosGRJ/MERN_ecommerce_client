@@ -81,7 +81,7 @@ export const History = () => {
             {<ShowPaymentInfo order={order} />}
             {showOrderInTable(order)}
             <div className='row'>
-               <div className='col'>{showDownloadLink()}</div>
+               <div className='col'>{showDownloadLink(order)}</div>
             </div>
          </div>
       ));
