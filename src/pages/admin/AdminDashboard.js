@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { AdminNav } from '../../components/nav/AdminNav';
+import { changeStatus, getOrders } from '../../functions/admin';
 
 export const AdminDashboard = () => {
+   const [orders, setOrders] = useState([]);
+   const { user } = useSelector((state) => ({ ...state }));
+
+   useEffect(() => {
+      loadOrders(user);
+   }, [user]);
+
+   const loadOrders = (user) => {
+      getOrders(user.token).then((res) => {
+         setOrders(res.data);
+      });
+   };
+
+   const handleStatusChange = (orderId, orderStatus) => {
+      changeStatus(orderId, orderStatus, user.token)
+         .then((res) => {
+            toast.success('Status Updated');
+            loadOrders(user.token);
+         })
+         .catch((err) => console.log(err));
+   };
+
    return (
       <div className='container-fluid'>
          <div className='row'>
