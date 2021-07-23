@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { AdminNav } from '../../components/nav/AdminNav';
+import { Orders } from '../../components/order/Orders';
 import { changeStatus, getOrders } from '../../functions/admin';
 
 export const AdminDashboard = () => {
@@ -22,7 +23,7 @@ export const AdminDashboard = () => {
       changeStatus(orderId, orderStatus, user.token)
          .then((res) => {
             toast.success('Status Updated');
-            loadOrders(user.token);
+            loadOrders(user);
          })
          .catch((err) => console.log(err));
    };
@@ -34,8 +35,9 @@ export const AdminDashboard = () => {
                <AdminNav />
             </div>
 
-            <div className='col'>
+            <div className='col-md-10'>
                <h4>Admin Dashboard</h4>
+               <Orders orders={orders} handleStatusChange={handleStatusChange} />
             </div>
          </div>
       </div>
