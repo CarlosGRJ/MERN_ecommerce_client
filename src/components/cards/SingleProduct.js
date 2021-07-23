@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Tabs, Tooltip } from 'antd';
 import StarRating from 'react-star-ratings';
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import Laptop from '../../images/macbookpro.webp'; // Default Image
@@ -12,6 +12,8 @@ import { showAverage } from '../../functions/rating';
 import _ from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 import { types } from '../../types/types';
+import { addToWishlist } from '../../functions/user';
+import { toast } from 'react-toastify';
 
 const { TabPane } = Tabs;
 
@@ -23,6 +25,8 @@ export const SingleProduct = ({ product, onStarClick, star }) => {
    // Redux
    const { user, cart } = useSelector((state) => ({ ...state }));
    const dispatch = useDispatch();
+   // router
+   const history = useHistory()
 
    const handleAddToCart = () => {
       // create cart array
@@ -58,6 +62,17 @@ export const SingleProduct = ({ product, onStarClick, star }) => {
             payload: true,
          });
       }
+   };
+
+   const handleAddToWishlist = (e) => {
+      e.preventDefault();
+      addToWishlist(product._id, user.token)
+         .then((res) => {
+            console.log('ADDED TO WISHLIST', res.data);
+            toast.success('Added to wishlist');
+            history.push('/user/wishlist');
+         })
+         .catch((err) => console.log(err));
    };
 
    return (
@@ -104,10 +119,10 @@ export const SingleProduct = ({ product, onStarClick, star }) => {
                         Add to cart
                      </span>
                   </Tooltip>,
-                  <Link to='/'>
+                  <div onClick={handleAddToWishlist}>
                      <HeartOutlined className='text-info' /> <br /> Add to
                      Wishlist
-                  </Link>,
+                  </div>,
                   <RatingModal>
                      <StarRating
                         name={_id}
