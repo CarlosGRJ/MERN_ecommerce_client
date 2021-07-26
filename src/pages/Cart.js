@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ProductCardInCheckout } from '../components/cards/ProductCardInCheckout';
 import { userCart } from '../functions/user';
+import { types } from '../types/types';
 
 export const Cart = ({ history }) => {
    const { cart, user } = useSelector((state) => ({ ...state }));
@@ -17,6 +18,23 @@ export const Cart = ({ history }) => {
 
    const saveOrderToDb = () => {
       // console.log('cart', JSON.stringify(cart, null, 4));
+      userCart(cart, user.token)
+         .then((res) => {
+            console.log('CART POST RES ', res);
+            console.log('RES DATA OK', res);
+            if (res.data.ok) {
+               history.push('/checkout');
+            }
+         })
+         .catch((err) => console.log('cart save err', err));
+   };
+
+   const saveCashOrderToDb = () => {
+      // console.log('cart', JSON.stringify(cart, null, 4));
+      dispatch({
+         type: types.cod,
+         payload: true,
+      });
       userCart(cart, user.token)
          .then((res) => {
             console.log('CART POST RES ', res);
@@ -81,12 +99,21 @@ export const Cart = ({ history }) => {
                Total: <b>${getTotal()}</b>
                <hr />
                {user ? (
-                  <button
-                     onClick={saveOrderToDb}
-                     className='btn btn-sm btn-pimary mt-2'
-                     disabled={!cart.length}>
-                     Proceed to Checkout
-                  </button>
+                  <>
+                     <button
+                        onClick={saveOrderToDb}
+                        className='btn btn-sm btn-success mt-2'
+                        disabled={!cart.length}>
+                        Proceed to Checkout
+                     </button>
+                     <br />
+                     <button
+                        onClick={saveCashOrderToDb}
+                        className='btn btn-sm btn-warning mt-2'
+                        disabled={!cart.length}>
+                        Pay Cash on Delivery
+                     </button>
+                  </>
                ) : (
                   <button className='btn btn-sm btn-pimary mt-2'>
                      <Link

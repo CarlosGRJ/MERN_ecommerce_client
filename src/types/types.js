@@ -9,4 +9,6 @@ export const types = {
    setVisible: 'SET_VISIBLE',
 
    couponApplied: 'COUPON_APPLIED',
+
+   cod: 'COD',
 };
