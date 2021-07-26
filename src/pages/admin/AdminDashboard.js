@@ -5,7 +5,7 @@ import { AdminNav } from '../../components/nav/AdminNav';
 import { Orders } from '../../components/order/Orders';
 import { changeStatus, getOrders } from '../../functions/admin';
 
-export const AdminDashboard = () => {
+const AdminDashboard = () => {
    const [orders, setOrders] = useState([]);
    const { user } = useSelector((state) => ({ ...state }));
 
@@ -37,9 +37,14 @@ export const AdminDashboard = () => {
 
             <div className='col-md-10'>
                <h4>Admin Dashboard</h4>
-               <Orders orders={orders} handleStatusChange={handleStatusChange} />
+               <Orders
+                  orders={orders}
+                  handleStatusChange={handleStatusChange}
+               />
             </div>
          </div>
       </div>
    );
 };
+
+export default AdminDashboard;

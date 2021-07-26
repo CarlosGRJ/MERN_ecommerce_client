@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { currentAdmin } from '../functions/auth';
 import { LoadingToRedirect } from './LoadingToRedirect';
 
-export const AdminRoute = ({ children, ...rest }) => {
+const AdminRoute = ({ children, ...rest }) => {
    const { user } = useSelector((state) => ({ ...state }));
    const [ok, setOk] = useState(false);
 
@@ -22,9 +22,7 @@ export const AdminRoute = ({ children, ...rest }) => {
       }
    }, [user]);
 
-   return ok ? (
-      <Route {...rest} />
-   ) : (
-      <LoadingToRedirect />
-   );
+   return ok ? <Route {...rest} /> : <LoadingToRedirect />;
 };
+
+export default AdminRoute;

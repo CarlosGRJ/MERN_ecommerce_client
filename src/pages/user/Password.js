@@ -3,7 +3,7 @@ import { UserNav } from '../../components/nav/UserNav';
 import { auth } from '../../firebase/firebase';
 import { toast } from 'react-toastify';
 
-export const Password = () => {
+const Password = () => {
    const [password, setPassword] = useState('');
    const [loading, setLoading] = useState(false);
 
@@ -64,3 +64,5 @@ export const Password = () => {
       </div>
    );
 };
+
+export default Password;

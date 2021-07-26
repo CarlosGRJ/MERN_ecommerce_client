@@ -5,7 +5,7 @@ import { ProductCardInCheckout } from '../components/cards/ProductCardInCheckout
 import { userCart } from '../functions/user';
 import { types } from '../types/types';
 
-export const Cart = ({ history }) => {
+const Cart = ({ history }) => {
    const { cart, user } = useSelector((state) => ({ ...state }));
    const dispatch = useDispatch();
 
@@ -134,3 +134,5 @@ export const Cart = ({ history }) => {
       </div>
    );
 };
+
+export default Cart;

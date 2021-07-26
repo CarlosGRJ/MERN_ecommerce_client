@@ -17,7 +17,7 @@ import { Search } from '../forms/Search';
 
 const { SubMenu, Item } = Menu;
 
-export const Header = () => {
+const Header = () => {
    const [current, setCurrent] = useState('home');
 
    const dispatch = useDispatch();
@@ -101,3 +101,5 @@ export const Header = () => {
       </Menu>
    );
 };
+
+export default Header;

@@ -4,12 +4,10 @@ import { getUserOrders } from '../../functions/user';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { ShowPaymentInfo } from '../../components/cards/ShowPaymentInfo';
-import {
-   PDFDownloadLink,
-} from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { Invoice } from '../../components/order/Invoice';
 
-export const History = () => {
+const History = () => {
    const [orders, setOrders] = useState([]);
    const { user } = useSelector((state) => ({ ...state }));
 
@@ -97,3 +95,5 @@ export const History = () => {
       </div>
    );
 };
+
+export default History;

@@ -18,7 +18,7 @@ import { Star } from '../components/forms/Star';
 
 const { SubMenu } = Menu;
 
-export const Shop = () => {
+const Shop = () => {
    const [products, setProducts] = useState([]);
    const [loading, setLoading] = useState(false);
    const [price, setPrice] = useState([0, 0]);
@@ -444,3 +444,5 @@ export const Shop = () => {
       </div>
    );
 };
+
+export default Shop;

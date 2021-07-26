@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProductCard } from '../../components/cards/ProductCard';
 import { getSub } from '../../functions/sub';
 
-export const SubHome = ({ match }) => {
+const SubHome = ({ match }) => {
    const [sub, setSub] = useState({});
    const [products, setProducts] = useState([]);
    const [loading, setLoading] = useState(false);
@@ -45,3 +45,5 @@ export const SubHome = ({ match }) => {
       </div>
    );
 };
+
+export default SubHome;

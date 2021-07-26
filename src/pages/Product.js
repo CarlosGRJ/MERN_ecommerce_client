@@ -5,7 +5,7 @@ import { SingleProduct } from '../components/cards/SingleProduct';
 import { getRelated } from '../functions/product';
 import { ProductCard } from '../components/cards/ProductCard';
 
-export const Product = ({ match }) => {
+const Product = ({ match }) => {
    const [product, setProduct] = useState({});
    const [related, setRelated] = useState([]);
    const [star, setStar] = useState(0);
@@ -87,3 +87,5 @@ export const Product = ({ match }) => {
       </div>
    );
 };
+
+export default Product;

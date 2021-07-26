@@ -24,7 +24,7 @@ const initialState = {
    brand: 'Apple',
 };
 
-export const ProductCreate = () => {
+const ProductCreate = () => {
    const [values, setValues] = useState(initialState);
    const [subOptions, setSubOptions] = useState([]);
    const [showSub, setShowSub] = useState(false);
@@ -91,7 +91,11 @@ export const ProductCreate = () => {
             </div>
 
             <div className='col-md-10'>
-               {loading ? <LoadingOutlined className='text-danger h1' /> : <h4>Product Create</h4>}
+               {loading ? (
+                  <LoadingOutlined className='text-danger h1' />
+               ) : (
+                  <h4>Product Create</h4>
+               )}
                <hr />
 
                {/* {JSON.stringify(values.images)} */}
@@ -118,3 +122,5 @@ export const ProductCreate = () => {
       </div>
    );
 };
+
+export default ProductCreate;

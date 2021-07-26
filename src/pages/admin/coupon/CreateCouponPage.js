@@ -11,7 +11,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { DeleteOutlined } from '@ant-design/icons';
 import { AdminNav } from '../../../components/nav/AdminNav';
 
-export const CreateCouponPage = () => {
+const CreateCouponPage = () => {
    const [name, setName] = useState('');
    const [expiry, setExpiry] = useState('');
    const [discount, setDiscount] = useState('');
@@ -142,3 +142,5 @@ export const CreateCouponPage = () => {
       </div>
    );
 };
+
+export default CreateCouponPage;

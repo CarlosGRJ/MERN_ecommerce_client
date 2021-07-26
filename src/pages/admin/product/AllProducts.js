@@ -6,7 +6,7 @@ import { AdminProductCard } from '../../../components/cards/AdminProductCard';
 import { AdminNav } from '../../../components/nav/AdminNav';
 import { getProductsByCount, removeProduct } from '../../../functions/product';
 
-export const AllProducts = () => {
+const AllProducts = () => {
    const [products, setProducts] = useState([]);
    const [loading, setLoading] = useState(false);
    // redux
@@ -78,3 +78,5 @@ export const AllProducts = () => {
       </div>
    );
 };
+
+export default AllProducts;

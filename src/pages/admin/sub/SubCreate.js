@@ -9,7 +9,7 @@ import { CategoryForm } from '../../../components/forms/CategoryForm';
 import { LocalSearch } from '../../../components/forms/LocalSearch';
 import { getCategories } from '../../../functions/category';
 
-export const SubCreate = () => {
+const SubCreate = () => {
    const { user } = useSelector((state) => ({ ...state }));
 
    const [name, setName] = useState('');
@@ -143,3 +143,5 @@ export const SubCreate = () => {
       </div>
    );
 };
+
+export default SubCreate;

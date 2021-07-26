@@ -6,8 +6,7 @@ import { useDispatch } from 'react-redux';
 import { types } from '../../types/types';
 import { createOrUpdateUser } from '../../functions/auth';
 
-
-export const RegisterComplete = ({ history }) => {
+const RegisterComplete = ({ history }) => {
    const [formValues, handleInputChange] = useForm({
       email: `${window.localStorage.getItem('emailForRegistration') || ''}`,
       password: '',
@@ -18,8 +17,8 @@ export const RegisterComplete = ({ history }) => {
    const dispatch = useDispatch();
 
    // useEffect(() => {
-      //   console.log(window.localStorage.getItem('emailForRegistration'));
-      //   console.log(window.location.href);
+   //   console.log(window.localStorage.getItem('emailForRegistration'));
+   //   console.log(window.location.href);
    // }, []);
 
    const handleSubmit = async (e) => {
@@ -52,19 +51,19 @@ export const RegisterComplete = ({ history }) => {
             console.log('USER', user, 'idTokenResult ', idTokenResult);
 
             createOrUpdateUser(idTokenResult.token)
-            .then((res) => {
-               dispatch({
-                  type: types.authLogin,
-                  payload: {
-                     name: res.data.name,
-                     email: res.data.email,
-                     token: idTokenResult,
-                     role: res.data.role,
-                     _id: res.data._id,
-                  },
-               });
-            })
-            .catch(err => console.log(err));
+               .then((res) => {
+                  dispatch({
+                     type: types.authLogin,
+                     payload: {
+                        name: res.data.name,
+                        email: res.data.email,
+                        token: idTokenResult,
+                        role: res.data.role,
+                        _id: res.data._id,
+                     },
+                  });
+               })
+               .catch((err) => console.log(err));
 
             // redirect
             history.push('/');
@@ -118,3 +117,5 @@ export const RegisterComplete = ({ history }) => {
       </div>
    );
 };
+
+export default RegisterComplete;

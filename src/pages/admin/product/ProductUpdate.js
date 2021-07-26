@@ -23,7 +23,7 @@ const initialState = {
    brand: '',
 };
 
-export const ProductUpdate = ({ match, history }) => {
+const ProductUpdate = ({ match, history }) => {
    // state
    const [values, setValues] = useState(initialState);
    const [categories, setCategories] = useState([]);
@@ -174,3 +174,5 @@ export const ProductUpdate = ({ match, history }) => {
       </div>
    );
 };
+
+export default ProductUpdate;

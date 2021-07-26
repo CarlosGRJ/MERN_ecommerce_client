@@ -5,7 +5,7 @@ import { UserNav } from '../../components/nav/UserNav';
 import { getWishlist, removeWishlist } from '../../functions/user';
 import { DeleteOutlined } from '@ant-design/icons';
 
-export const Wishlist = () => {
+const Wishlist = () => {
    const [wishlist, setWishlist] = useState([]);
    const { user } = useSelector((state) => ({ ...state }));
 
@@ -50,3 +50,5 @@ export const Wishlist = () => {
       </div>
    );
 };
+
+export default Wishlist;

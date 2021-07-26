@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
 import { useSelector } from 'react-redux';
 
-export const ForgotPassword = ({ history }) => {
+const ForgotPassword = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
       email: 'carlosgrjpruebas@gmail.com',
    });
@@ -68,3 +68,5 @@ export const ForgotPassword = ({ history }) => {
       </div>
    );
 };
+
+export default ForgotPassword;

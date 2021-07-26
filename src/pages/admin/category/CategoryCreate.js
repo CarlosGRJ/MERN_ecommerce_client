@@ -12,7 +12,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { CategoryForm } from '../../../components/forms/CategoryForm';
 import { LocalSearch } from '../../../components/forms/LocalSearch';
 
-export const CategoryCreate = () => {
+const CategoryCreate = () => {
    const { user } = useSelector((state) => ({ ...state }));
 
    const [name, setName] = useState('');
@@ -119,3 +119,5 @@ export const CategoryCreate = () => {
       </div>
    );
 };
+
+export default CategoryCreate;

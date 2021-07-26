@@ -12,7 +12,7 @@ import { types } from '../types/types';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-export const Checkout = ({ history }) => {
+const Checkout = ({ history }) => {
    const [products, setProducts] = useState([]);
    const [total, setTotal] = useState(0);
    const [address, setAddress] = useState('');
@@ -220,3 +220,5 @@ export const Checkout = ({ history }) => {
       </div>
    );
 };
+
+export default Checkout;

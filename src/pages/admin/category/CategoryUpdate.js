@@ -4,14 +4,15 @@ import { toast } from 'react-toastify';
 import { updateCategory, getCategory } from '../../../functions/category';
 import { useSelector } from 'react-redux';
 import { CategoryForm } from '../../../components/forms/CategoryForm';
-export const CategoryUpdate = ({ history, match }) => {
+
+const CategoryUpdate = ({ history, match }) => {
    const { user } = useSelector((state) => ({ ...state }));
 
    const [name, setName] = useState('');
    const [loading, setLoading] = useState(false);
 
    useEffect(() => {
-      // loadCategory();  =====> Warning missing dependency 
+      // loadCategory();  =====> Warning missing dependency
       getCategory(match.params.slug).then((c) => {
          setName(c.data.category.name);
       });
@@ -66,3 +67,5 @@ export const CategoryUpdate = ({ history, match }) => {
       </div>
    );
 };
+
+export default CategoryUpdate;

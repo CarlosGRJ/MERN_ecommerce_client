@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { CategoryForm } from '../../../components/forms/CategoryForm';
 import { getCategories } from '../../../functions/category';
 
-export const SubUpdate = ({ history, match }) => {
+const SubUpdate = ({ history, match }) => {
    const { user } = useSelector((state) => ({ ...state }));
 
    const [name, setName] = useState('');
@@ -98,3 +98,5 @@ export const SubUpdate = ({ history, match }) => {
       </div>
    );
 };
+
+export default SubUpdate;

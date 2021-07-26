@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import laptop from '../../images/macbookpro.webp'; // default image
 import { types } from '../../types/types';
 
-export const SideDrawer = () => {
+const SideDrawer = () => {
    const dispatch = useDispatch();
    const { drawer, cart } = useSelector((state) => ({ ...state }));
 
@@ -64,3 +64,5 @@ export const SideDrawer = () => {
       </Drawer>
    );
 };
+
+export default SideDrawer;
