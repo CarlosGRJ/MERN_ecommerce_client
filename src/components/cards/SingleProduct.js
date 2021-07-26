@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Tabs, Tooltip } from 'antd';
 import StarRating from 'react-star-ratings';
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import Laptop from '../../images/macbookpro.webp'; // Default Image
@@ -23,10 +23,10 @@ export const SingleProduct = ({ product, onStarClick, star }) => {
    const [tooltip, setTooltip] = useState('Click to add');
 
    // Redux
-   const { user, cart } = useSelector((state) => ({ ...state }));
+   const { user } = useSelector((state) => ({ ...state }));
    const dispatch = useDispatch();
    // router
-   const history = useHistory()
+   const history = useHistory();
 
    const handleAddToCart = () => {
       // create cart array

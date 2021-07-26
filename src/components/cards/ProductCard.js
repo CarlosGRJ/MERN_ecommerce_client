@@ -34,10 +34,10 @@ export const ProductCard = ({ product }) => {
             ...product,
             count: 1,
          });
-         console.log('CART --> ', cart);
+         // console.log('CART --> ', cart);
          // remove duplicates
          const unique = _.uniqWith(cart, _.isEqual);
-         console.log('unique ', unique);
+         // console.log('unique ', unique);
          // save to Local Storage
          localStorage.setItem('cart', JSON.stringify(unique));
          // show tooltip
@@ -78,6 +78,7 @@ export const ProductCard = ({ product }) => {
                </Link>,
                <Tooltip title={tooltip}>
                   <Link
+                     to=''
                      onClick={handleAddToCart}
                      disabled={product.quantity < 1}>
                      <ShoppingCartOutlined className='text-danger' /> <br />

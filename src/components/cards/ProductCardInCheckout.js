@@ -23,13 +23,13 @@ export const ProductCardInCheckout = ({ p }) => {
             cart = JSON.parse(localStorage.getItem('cart'));
          }
 
-         cart.map((product, i) => {
+         cart.forEach((product, i) => {
             if (product._id === p._id) {
                cart[i].color = e.target.value;
             }
          });
 
-         console.log('cart update color', cart);
+         // console.log('cart update color', cart);
          localStorage.setItem('cart', JSON.stringify(cart));
          dispatch({
             type: types.addToCart,

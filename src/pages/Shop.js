@@ -16,7 +16,7 @@ import { getSubs } from '../functions/sub';
 import { types } from '../types/types';
 import { Star } from '../components/forms/Star';
 
-const { SubMenu, ItemGroup } = Menu;
+const { SubMenu } = Menu;
 
 export const Shop = () => {
    const [products, setProducts] = useState([]);
@@ -26,24 +26,28 @@ export const Shop = () => {
    const [categories, setCategories] = useState([]);
    const [categoryIds, setCategoryIds] = useState([]);
    const [subs, setSubs] = useState([]);
-   const [sub, setSub] = useState('');
-   const [star, setStar] = useState('');
-   const [brands, setBrands] = useState([
-      'Apple',
-      'Samsung',
-      'Microsoft',
-      'Lenovo',
-      'ASUS',
-      'DELL',
-   ]);
+   // const [sub, setSub] = useState('');
+   // const [star, setStar] = useState('');
+   // const [brands, setBrands] = useState([
+   //    'Apple',
+   //    'Samsung',
+   //    'Microsoft',
+   //    'Lenovo',
+   //    'ASUS',
+   //    'DELL',
+   // ]);
+   // Agregué este porque no estabamos usando el estado de brands
+   const brands = ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS', 'DELL'];
    const [brand, setBrand] = useState('');
-   const [colors, setColors] = useState([
-      'Black',
-      'Brown',
-      'Silver',
-      'White',
-      'Blue',
-   ]);
+   // const [colors, setColors] = useState([
+   //    'Black',
+   //    'Brown',
+   //    'Silver',
+   //    'White',
+   //    'Blue',
+   // ]);
+   // Agregué este porque no estabamos usando el estado de colors
+   const colors = ['Black', 'Brown', 'Silver', 'White', 'Blue'];
    const [color, setColor] = useState('');
    const [shipping, setShipping] = useState('');
 
@@ -90,7 +94,7 @@ export const Shop = () => {
    useEffect(() => {
       // console.log('ok to request');
       fetchProducts({ price });
-   }, [ok]);
+   }, [ok, price]);
 
    const handleSlider = (value) => {
       dispatch({
@@ -101,8 +105,8 @@ export const Shop = () => {
       // reset
       setCategoryIds([]);
       setPrice(value);
-      setStar('');
-      setSub('');
+      // setStar('');
+      // setSub('');
       setBrand('');
       setColor('');
       setShipping('');
@@ -136,8 +140,8 @@ export const Shop = () => {
          payload: { text: '' },
       });
       setPrice([0, 0]);
-      setStar('');
-      setSub('');
+      // setStar('');
+      // setSub('');
       setBrand('');
       setColor('');
       setShipping('');
@@ -166,8 +170,8 @@ export const Shop = () => {
       });
       setPrice([0, 0]);
       setCategoryIds([]);
-      setStar(num);
-      setSub('');
+      // setStar(num);
+      // setSub('');
       setBrand('');
       setColor('');
       setShipping('');
@@ -197,15 +201,15 @@ export const Shop = () => {
       ));
 
    const handleSub = (sub) => {
-      console.log('SUB ', sub);
-      setSub(sub);
+      // console.log('SUB ', sub);
+      // setSub(sub);
       dispatch({
          type: types.searchQuery,
          payload: { text: '' },
       });
       setPrice([0, 0]);
       setCategoryIds([]);
-      setStar('');
+      // setStar('');
       setBrand('');
       setColor('');
       setShipping('');
@@ -228,14 +232,14 @@ export const Shop = () => {
    };
 
    const handleBrand = (e) => {
-      setSub('');
+      // setSub('');
       dispatch({
          type: types.searchQuery,
          payload: { text: '' },
       });
       setPrice([0, 0]);
       setCategoryIds([]);
-      setStar('');
+      // setStar('');
       setColor('');
       setShipping('');
       setBrand(e.target.value);
@@ -258,14 +262,14 @@ export const Shop = () => {
    };
 
    const handleColor = (e) => {
-      setSub('');
+      // setSub('');
       dispatch({
          type: types.searchQuery,
          payload: { text: '' },
       });
       setPrice([0, 0]);
       setCategoryIds([]);
-      setStar('');
+      // setStar('');
       setBrand('');
       setShipping('');
       setColor(e.target.value);
@@ -296,14 +300,14 @@ export const Shop = () => {
    };
 
    const handleShippingChange = (e) => {
-      setSub('');
+      // setSub('');
       dispatch({
          type: types.searchQuery,
          payload: { text: '' },
       });
       setPrice([0, 0]);
       setCategoryIds([]);
-      setStar('');
+      // setStar('');
       setBrand('');
       setColor('');
       setShipping(e.target.value);

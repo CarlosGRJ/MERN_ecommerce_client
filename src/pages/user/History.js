@@ -2,17 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { UserNav } from '../../components/nav/UserNav';
 import { getUserOrders } from '../../functions/user';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { ShowPaymentInfo } from '../../components/cards/ShowPaymentInfo';
 import {
-   Document,
-   Page,
-   Text,
-   View,
-   StyleSheet,
    PDFDownloadLink,
-   PDFViewer,
 } from '@react-pdf/renderer';
 import { Invoice } from '../../components/order/Invoice';
 
@@ -26,7 +19,7 @@ export const History = () => {
 
    const loadUserOrders = (user) => {
       getUserOrders(user.token).then((res) => {
-         console.log('res ', res);
+         // console.log('res ', res);
          setOrders(res.data);
       });
    };
