@@ -23,6 +23,7 @@ export const Checkout = ({ history }) => {
 
    const dispatch = useDispatch();
    const { user, COD } = useSelector((state) => ({ ...state }));
+   const couponTrueOrFalse = useSelector((state) => state.coupon);
 
    useEffect(() => {
       getUserCart(user.token).then((res) => {
@@ -124,9 +125,36 @@ export const Checkout = ({ history }) => {
    );
 
    const createCashOrder = () => {
-      createCashOrderForUser(user.token).then((res) => {
+      createCashOrderForUser(user.token, COD, couponTrueOrFalse).then((res) => {
          console.log('USER CASH ORDER CREATED RES', res);
          // empty cart from redux, Local Storage, reset coupon, reset COD, redirect
+         if (res.data.ok) {
+            // empty Local Storage
+            if (typeof window !== 'undefined') {
+               localStorage.removeItem('cart');
+            }
+            // empty redux cart
+            dispatch({
+               type: types.addToCart,
+               payload: [],
+            });
+            // empty redux coupon
+            dispatch({
+               type: types.couponApplied,
+               payload: false,
+            });
+            // empty redux COD
+            dispatch({
+               type: types.cod,
+               payload: false,
+            });
+            //empty cart from backend
+            emptyUserCart(user.token);
+            // redirect
+            setTimeout(() => {
+               history.push('/user/history');
+            }, 1000);
+         }
       });
    };
 
@@ -167,7 +195,7 @@ export const Checkout = ({ history }) => {
                         className='btn btn-primary'
                         disabled={!addressSaved || !products.length}
                         onClick={createCashOrder}>
-                        Place Order Cash
+                        Place Order
                      </button>
                   ) : (
                      <button

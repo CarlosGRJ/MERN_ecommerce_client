@@ -76,7 +76,7 @@ export const History = () => {
    );
 
    const showEachOrders = () =>
-      orders.map((order) => (
+      orders.reverse().map((order) => (
          <div className='m-5 p-3 card' key={order._id}>
             {<ShowPaymentInfo order={order} />}
             {showOrderInTable(order)}
