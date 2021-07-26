@@ -18,6 +18,10 @@ export const Cart = ({ history }) => {
 
    const saveOrderToDb = () => {
       // console.log('cart', JSON.stringify(cart, null, 4));
+      dispatch({
+         type: types.cod,
+         payload: false,
+      });
       userCart(cart, user.token)
          .then((res) => {
             console.log('CART POST RES ', res);
