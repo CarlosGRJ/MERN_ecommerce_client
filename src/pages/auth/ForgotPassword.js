@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 const ForgotPassword = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
-      email: 'carlosgrjpruebas@gmail.com',
+      email: '',
    });
 
    const { email } = formValues;

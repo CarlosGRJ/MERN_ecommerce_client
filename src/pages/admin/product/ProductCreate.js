@@ -9,19 +9,19 @@ import { createProduct } from '../../../functions/product';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const initialState = {
-   title: 'Macbook Pro',
-   description: 'Apple Product',
-   price: '4500',
+   title: '',
+   description: '',
+   price: '',
    categories: [],
    category: '',
    subs: [],
-   shipping: 'Yes',
-   quantity: '50',
+   shipping: '',
+   quantity: '',
    images: [],
    colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
    brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS', 'DELL'],
-   color: 'White',
-   brand: 'Apple',
+   color: '',
+   brand: '',
 };
 
 const ProductCreate = () => {
