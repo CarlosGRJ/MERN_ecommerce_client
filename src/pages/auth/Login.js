@@ -11,8 +11,8 @@ import { createOrUpdateUser } from '../../functions/auth';
 
 const Login = ({ history }) => {
    const [formValues, handleInputChange, reset] = useForm({
-      email: 'carlosgrjpruebas@gmail.com',
-      password: '123456',
+      email: '',
+      password: '',
    });
    const { email, password } = formValues;
 
